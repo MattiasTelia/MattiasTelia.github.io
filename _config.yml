@@ -1,3 +1,7 @@
 theme: jekyll-theme-minimal
 title: MJs homepage
 description: Test
+
+allowed_hosts: 
+  - mattiastelia.github.io
+  
