@@ -1,3 +1,5 @@
+remote_theme: pages-themes/minimal@v0.2.0
+
 theme: jekyll-theme-minimal
 title: MJs homepage
 description: Test
