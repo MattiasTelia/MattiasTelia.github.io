@@ -1,8 +1,24 @@
 <head>
-  <title>Gamla cyklar</title>
+  <title>Gamla cyklar - nonvalid nonce</title>
   <meta charset="utf-8" />
-  <script>
-    /* ACE Widgets - Embed v15 */
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="
+    default-src 'none';
+    script-src 'self' 'nonce-blaj' 'strict-dynamic' https: http:;
+    connect-src 'self' 'nonce-blaj' https://*.ace.teliacompany.net;
+    style-src 'self' 'nonce-blaj';
+    frame-src https://*.ace.teliacompany.net;
+    img-src 'self' 'nonce-blaj' blob: data:;
+    font-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    media-src 'self' data:;
+  "
+  />
+  <script nonce="badblaj">
+    /* ACE Widgets - Embed v18 */
     (function (e, t) {
       var n = document.getElementsByTagName("script")[0];
       var i = document.createElement("script");
@@ -27,7 +43,7 @@
         n.parentNode.insertBefore(i, n);
       }
     })(
-      "https://widgets-dev.ace.teliacompany.net/embed/demobolaget/c0784195-0cfa-474c-b5fa-09d269a5a424?v=1.1.82-rc.20",
+      "https://widgets-dev.ace.teliacompany.net/embed/demobolaget/c0784195-0cfa-474c-b5fa-09d269a5a424?v=1.1.115-rc.6",
       {}
     );
   </script>
