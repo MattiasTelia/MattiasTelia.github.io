@@ -37,4 +37,41 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add package.json
           git commit -m "Update version to ${{ inputs.version }}"
-          git push origin HEAD          
+          git push origin HEAD   
+
+      # From WebSDK deploy script
+      #  # Set up ssh stuff
+      #  # Install dependency stuff
+      #  # Get and construct version and build number
+      #  # Build WebSDK
+      #  # Deploy WebSDK
+
+      # if build and deploy was successfull
+      - name: Create tag if it does not exist
+        run: |
+          TAG_NAME=${{ inputs.version }}
+          if git rev-parse "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
+            echo "Tag $TAG_NAME already exists."
+          else
+            git tag $TAG_NAME
+            git push origin $TAG_NAME
+            echo "Tag $TAG_NAME created and pushed."
+          fi
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ inputs.version }}
+          release_name: "Release ${{ inputs.version }}"
+          body: "This is the release for version ${{ inputs.version }}."
+          draft: false
+          prerelease: true
+
+      - name: Upload asset to GitHub Release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "./releaseFiles/ACE Web SDK Release Notes.pdf"
+          asset_name: "ACE Web SDK Release Notes.pdf"
+          asset_content_type: application/pdf

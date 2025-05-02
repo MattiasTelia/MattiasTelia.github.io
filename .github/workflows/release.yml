@@ -1,0 +1,40 @@
+name: Prerelase
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release"
+        required: true
+
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+    steps:
+
+      # Check that a release branch med den angivna versionen finns
+      - name: Check if release branch exists
+        id: check_branch
+        run: |
+          git fetch origin
+          if git show-ref --verify --quiet refs/heads/release/${{ inputs.version }}; then
+            echo "Release branch release/${{ inputs.version }} exists."
+            echo "::set-output name=branch_exists::true"
+          else
+            echo "Release branch release/${{ inputs.version }} does not exist."
+            echo "::set-output name=branch_exists::false"
+          fi
+      - name: Checkout release branch
+        if: steps.check_branch.outputs.branch_exists == 'true'
+        run: |
+          git checkout release/${{ inputs.version }}
+      
+      
+      # Nytt i deploy script på branchen changeDeployScript
+        # Run the stuf in ${PWD}/packages/web-sdk/buildTools/github_deploy_ver3.sh
+        #   - Copies the WebSDk binaries to a folder in this repo
+        #     (Maybe should creta a temp folder in this repo first)
+        #   - Creates a zip file of the binaries
+
+        #   - Uploads the zip file to the release
+        #   - Cleans up the temp folder
