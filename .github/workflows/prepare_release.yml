@@ -16,5 +16,5 @@ jobs:
 
       - name: Create and push release branch
         run: |
-          git branch release
+          git branch release/${{ inputs.version }}
           git push origin release/${{ inputs.version }}
