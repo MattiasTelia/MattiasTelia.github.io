@@ -58,6 +58,12 @@ jobs:
             echo "Tag $TAG_NAME created and pushed."
           fi
 
+      # ToDo: Kanske ta bort det mesta av koden i den här branchen 
+      #       och bara ha kvar det som behövs för att zippa och 
+      #       hämta upp binärerna från WDSen + release notes
+      #       Då blir dom extra två source kod väldigt små och ofarliga
+      #       Skriv även en bra kommentar om vad dom gör där
+
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
