@@ -72,9 +72,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
+      - name: List releaseFiles directory
+        run: ls -l ./releaseFiles
+
       - name: Print HTML to PDF
         run: |
-          google-chrome --headless --no-sandbox --disable-gpu --print-to-pdf=./releaseFiles/blaj.pdf ../releaseFiles/Test.html
+          google-chrome --headless --no-sandbox --disable-gpu --print-to-pdf=./releaseFiles/blaj.pdf ./releaseFiles/Test.html
 
 
       - name: Create GitHub Release
