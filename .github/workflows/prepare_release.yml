@@ -47,6 +47,7 @@ jobs:
       #  # Deploy WebSDK
 
       # if build and deploy was successfull
+      # Todo: Det här verkar inte fungera kolla upp det här
       - name: Create tag if it does not exist
         run: |
           TAG_NAME=${{ inputs.version }}
@@ -64,6 +65,18 @@ jobs:
       #       Då blir dom extra två source kod väldigt små och ofarliga
       #       Skriv även en bra kommentar om vad dom gör där
 
+      - name: Install Google Chrome
+        run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Print HTML to PDF
+        run: |
+          google-chrome --headless --no-sandbox --disable-gpu --print-to-pdf=./releaseFiles/blaj.pdf ../releaseFiles/Test.html
+
+
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -80,8 +93,8 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "./releaseFiles/ACE Web SDK Release Notes.pdf"
-          asset_name: "ACE Web SDK Release Notes.pdf"
+          asset_path: "./releaseFiles/"
+          asset_name: "blaj.pdf"
           asset_content_type: application/pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
