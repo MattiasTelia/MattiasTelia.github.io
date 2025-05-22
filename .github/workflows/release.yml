@@ -11,20 +11,13 @@ jobs:
   CheckVersion:
     runs-on: ubuntu-latest
     steps:
-
-      # Check that a release branch med den angivna versionen finns
-      - name: Check if release branch exists
-        id: check_branch
+      - name: Fail if release branch does not exist
         run: |
-          git fetch origin
-          if git show-ref --verify --quiet refs/heads/release/${{ inputs.version }}; then
-            echo "Release branch release/${{ inputs.version }} exists."
-            echo "::set-output name=branch_exists::true"
-          else
-            echo "Release branch release/${{ inputs.version }} does not exist."
-            echo "::set-output name=branch_exists::false"
+          if ! git ls-remote --exit-code --heads origin release/${{ inputs.version }}; then
+            echo "Release branch release/${{ inputs.version }} does not exist. Failing."
+            exit 1
           fi
-  
+
   FinilizeRelase:
     runs-on: ubuntu-latest
     needs: CheckVersion

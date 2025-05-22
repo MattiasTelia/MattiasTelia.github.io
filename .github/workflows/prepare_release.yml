@@ -16,6 +16,13 @@ jobs:
       - name: Checkout current branch
         uses: actions/checkout@v3
 
+      - name: Fail if release branch already exists
+        run: |
+          if git ls-remote --exit-code --heads origin release/${{ inputs.version }}; then
+            echo "Release branch release/${{ inputs.version }} already exists. Failing."
+            exit 1
+          fi
+
       - name: Create and push release branch
         run: |
           git fetch origin
@@ -40,6 +47,7 @@ jobs:
           git push origin HEAD   
 
       - name: Call build and deploy script
+      # ToDo: fail script if it fails
         run: |
           echo "Building and deploying WebSDK..."
           # Call your build and deploy script here
