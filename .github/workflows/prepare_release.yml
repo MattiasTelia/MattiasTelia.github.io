@@ -64,7 +64,6 @@ jobs:
 
   UpdateInstances:
     runs-on: ubuntu-latest
-    needs: BuildAndDeploy
     steps:
     - name: Update systemtest and systemtest-e2e instances
       run: |
@@ -72,7 +71,6 @@ jobs:
 
   CreateTestplan:
     runs-on: ubuntu-latest
-    needs: BuildAndDeploy
     steps:
     - name: Create testplan and test executions in Jira
       run: |
