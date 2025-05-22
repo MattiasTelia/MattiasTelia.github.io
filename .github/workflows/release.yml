@@ -8,7 +8,7 @@ on:
         required: true
 
 jobs:
-  Release:
+  CheckVersion:
     runs-on: ubuntu-latest
     steps:
 
@@ -24,17 +24,23 @@ jobs:
             echo "Release branch release/${{ inputs.version }} does not exist."
             echo "::set-output name=branch_exists::false"
           fi
+  
+  FinilizeRelase:
+    runs-on: ubuntu-latest
+    needs: CheckVersion
+    steps:
       - name: Checkout release branch
-        if: steps.check_branch.outputs.branch_exists == 'true'
         run: |
           git checkout release/${{ inputs.version }}
-      
-      
-      # Nytt i deploy script på branchen changeDeployScript
-        # Run the stuf in ${PWD}/packages/web-sdk/buildTools/github_deploy_ver3.sh
-        #   - Copies the WebSDk binaries to a folder in this repo
-        #     (Maybe should creta a temp folder in this repo first)
-        #   - Creates a zip file of the binaries
 
-        #   - Uploads the zip file to the release
-        #   - Cleans up the temp folder
+      - name: Create tag if it does not exist
+        run: |
+          TAG_NAME=${{ inputs.version }}
+          if git rev-parse "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
+            echo "Tag $TAG_NAME already exists."
+          else
+            git tag --annotate x.y.z --message "Release x.y.z"
+            git push --tags
+            echo "Tag $TAG_NAME created and pushed."
+          fi      
+      

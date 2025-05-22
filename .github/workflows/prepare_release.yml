@@ -39,6 +39,17 @@ jobs:
           git commit -m "Update version to ${{ inputs.version }}"
           git push origin HEAD   
 
+    BuildAndDeploy:
+      runs-on: ubuntu-latest
+      needs: CreateReleaseBranch
+      steps:
+      - name: Call build and deploy script
+        run: |
+          echo "Building and deploying WebSDK..."
+          # Call your build and deploy script here
+          # For example:
+          # ./build_and_deploy.sh
+
       # From WebSDK deploy script
       #  # Set up ssh stuff
       #  # Install dependency stuff
@@ -46,58 +57,19 @@ jobs:
       #  # Build WebSDK
       #  # Deploy WebSDK
 
-      # if build and deploy was successfull
-      # Todo: Det här verkar inte fungera kolla upp det här
-      - name: Create tag if it does not exist
+    UpdateInstances:
+      runs-on: ubuntu-latest
+      needs: BuildAndDeploy
+      steps:
+      - name: Update systemtest and systemtest-e2e instances
         run: |
-          TAG_NAME=${{ inputs.version }}
-          if git rev-parse "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
-            echo "Tag $TAG_NAME already exists."
-          else
-            git tag $TAG_NAME
-            git push origin $TAG_NAME
-            echo "Tag $TAG_NAME created and pushed."
-          fi
+          echo "Call 'Deploy instance to WDS (DDC)' script in setupinstances repository"
 
-      # ToDo: Kanske ta bort det mesta av koden i den här branchen 
-      #       och bara ha kvar det som behövs för att zippa och 
-      #       hämta upp binärerna från WDSen + release notes
-      #       Då blir dom extra två source kod väldigt små och ofarliga
-      #       Skriv även en bra kommentar om vad dom gör där
-
-      - name: Install Google Chrome
+    CreateTestplan:
+      runs-on: ubuntu-latest
+      needs: BuildAndDeploy
+      steps:
+      - name: Create testplan and test executions in Jira
         run: |
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-
-      - name: List releaseFiles directory
-        run: ls -l ./releaseFiles
-
-      - name: Print HTML to PDF
-        run: |
-          google-chrome --headless --no-sandbox --disable-gpu --print-to-pdf=./releaseFiles/blaj.pdf ./releaseFiles/Test.html
-
-
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ inputs.version }}
-          release_name: "Release ${{ inputs.version }}"
-          body: "This is the release for version ${{ inputs.version }}."
-          draft: false
-          prerelease: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload asset to GitHub Release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "./releaseFiles/blaj.pdf"
-          asset_name: "blaj.pdf"
-          asset_content_type: application/pdf
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "Create testplan and test executions in Jira"
+          

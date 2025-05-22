@@ -1,0 +1,94 @@
+
+      # if build and deploy was successfull
+      # Todo: Det här verkar inte fungera kolla upp det här
+      - name: Create tag if it does not exist
+        run: |
+          TAG_NAME=${{ inputs.version }}
+          if git rev-parse "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
+            echo "Tag $TAG_NAME already exists."
+          else
+            git tag $TAG_NAME
+            git push origin $TAG_NAME
+            echo "Tag $TAG_NAME created and pushed."
+          fi
+
+      # ToDo: Kanske ta bort det mesta av koden i den här branchen 
+      #       och bara ha kvar det som behövs för att zippa och 
+      #       hämta upp binärerna från WDSen + release notes
+      #       Då blir dom extra två source kod väldigt små och ofarliga
+      #       Skriv även en bra kommentar om vad dom gör där
+
+      - name: Install Google Chrome
+        run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: List releaseFiles directory
+        run: ls -l ./releaseFiles
+
+      - name: Print HTML to PDF
+        run: |
+          google-chrome --headless --no-sandbox --disable-gpu --print-to-pdf=./releaseFiles/blaj.pdf ./releaseFiles/Test.html
+
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ inputs.version }}
+          release_name: "Release ${{ inputs.version }}"
+          body: "This is the release for version ${{ inputs.version }}."
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload asset to GitHub Release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "./releaseFiles/blaj.pdf"
+          asset_name: "blaj.pdf"
+          asset_content_type: application/pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+
+
+# =================================
+#Zippa och ladda upp release filerna
+
+ # Set up ssh stuff
+      - name: Create .ssh folder
+        run: mkdir -p ~/.ssh/
+        shell: bash
+
+      - name: Create and chmod private key
+        run: |
+          echo "$TEST_FILE_S" >> ~/.ssh/id_rsa
+          chmod 700 /home/runner/.ssh/id_rsa
+        shell: bash
+        env:
+          TEST_FILE_S: ${{secrets.SSH_PRIVATE_KEY}}
+
+      - name: Add key to known hosts
+        run: ssh-keyscan -H $WDS_IP_ADDRESS >> ~/.ssh/known_hosts
+        shell: bash
+
+  # Nytt i deploy script på branchen changeDeployScript
+    # Run the stuf in ${PWD}/packages/web-sdk/buildTools/github_deploy_ver3.sh
+    #   - Copies the WebSDk binaries to a folder in this repo
+    #     (Maybe should creta a temp folder in this repo first)
+    #   - Creates a zip file of the binaries
+
+    #   - Uploads the zip file to the release
+    #   - Cleans up the temp folder
+
+# Från github_deploy_ver3.sh
+   # mkdir -p $BINARY_FOLDER
+   # rsync -chavzP -e "ssh -v -i $SSH_FILE" $DEPLOYMENT_SERVER:$CURRENT_APP_FOLDER $BINARY_FOLDER ; ((SUCCESS |= $?))        
+
