@@ -48,3 +48,63 @@ jobs:
             echo "Tag $TAG_NAME created and pushed."
           fi      
       
+      - name: Zip and upload binaries
+        run: |
+          echo "Zipping and upload binaries..."
+          # Call your script to zip and get binaries here
+          # For example:
+          # ./zip_and_get_binaries.sh
+
+      - name: Install Google Chrome
+        run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: List releaseFiles directory
+        run: ls -l ./doc/release_notes
+
+      - name: Print HTML to PDF
+        run: |
+          google-chrome --headless --no-sandbox --disable-gpu --print-to-pdf=./doc/release_notes/ACE_Web_SDK_Release_Notes.pdf ./doc/release_notes/ACE_Web_SDK_Release_Notes.html
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ inputs.version }}
+          release_name: "Release ${{ inputs.version }}"
+          body: "This is the release for version ${{ inputs.version }}."
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Notes PDF
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./doc/release_notes/ACE_Web_SDK_Release_Notes.pdf
+          asset_name: ACE_Web_SDK_Release_Notes.pdf
+          asset_content_type: application/pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Notes .md
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./doc/release_notes/release_notes.md
+          asset_name: release_notes.md
+          asset_content_type: text/markdown
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#       - name: Upload multiple assets
+#        uses: AButler/upload-release-assets@v3.0
+#        with:
+#          files: './doc/release_notes/ACE_Web_SDK_Release_Notes.pdf;./path/to/your/binaries.zip'
+#          repo-token: ${{ secrets.GITHUB_TOKEN }}
+#          release-tag: ${{ inputs.version }}
+

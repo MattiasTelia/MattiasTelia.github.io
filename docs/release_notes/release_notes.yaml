@@ -1,0 +1,20 @@
+---
+from: gfm
+to: html5
+input-files:
+- release_notes.md
+output-file: ACE_Web_SDK_Release_Notes.html
+template: telia_pandoc_template.html
+css:
+- telia_pandoc_styles.css
+standalone: true
+self-contained: true
+table-of-contents: true
+toc-depth: 1
+metadata:
+ title: |
+  ACE Web SDK
+    Release Notes
+ version: 29.0.6
+ date: 2025-02-19
+...
