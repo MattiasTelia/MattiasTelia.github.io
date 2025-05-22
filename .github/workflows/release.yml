@@ -1,4 +1,4 @@
-name: Relase
+name: Release
 
 on:
   workflow_dispatch:
@@ -8,9 +8,12 @@ on:
         required: true
 
 jobs:
-  CheckVersion:
+  CheckReleaseBranchExists:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+
       - name: Fail if release branch does not exist
         run: |
           if ! git ls-remote --exit-code --heads origin release/${{ inputs.version }}; then
@@ -18,13 +21,14 @@ jobs:
             exit 1
           fi
 
-  FinilizeRelase:
+  FinalizeRelease:
     runs-on: ubuntu-latest
-    needs: CheckVersion
+    needs: CheckReleaseBranchExists
     steps:
       - name: Checkout release branch
-        run: |
-          git checkout release/${{ inputs.version }}
+        uses: actions/checkout@v3
+        with:
+          ref: release/${{ inputs.version }}
 
       - name: Create tag if it does not exist
         run: |
@@ -32,7 +36,7 @@ jobs:
           if git rev-parse "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
             echo "Tag $TAG_NAME already exists."
           else
-            git tag --annotate x.y.z --message "Release x.y.z"
+            git tag --annotate "$TAG_NAME" --message "Release $TAG_NAME"
             git push --tags
             echo "Tag $TAG_NAME created and pushed."
           fi      

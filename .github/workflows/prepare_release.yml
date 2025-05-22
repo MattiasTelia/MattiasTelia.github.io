@@ -64,6 +64,7 @@ jobs:
 
   UpdateInstances:
     runs-on: ubuntu-latest
+    needs: CreateReleaseBranch
     steps:
     - name: Update systemtest and systemtest-e2e instances
       run: |
@@ -71,6 +72,7 @@ jobs:
 
   CreateTestplan:
     runs-on: ubuntu-latest
+    needs: UpdateInstances
     steps:
     - name: Create testplan and test executions in Jira
       run: |
