@@ -21,6 +21,16 @@ jobs:
             exit 1
           fi
 
+      # ToDo, kolla oxå om det finns en tag med den versionen, avbryt om det gör det
+      #  - ändra oxå längre ner
+      #- name: Check if tag already exists
+      #  run: |
+      #    TAG_NAME=${{ inputs.version }}
+      #    if git rev-parse "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
+      #      echo "Tag $TAG_NAME already exists. Failing."
+      #      exit 1
+      #    fi  
+
   FinalizeRelease:
     runs-on: ubuntu-latest
     needs: CheckReleaseBranchExists
@@ -57,10 +67,15 @@ jobs:
 
       - name: Install Google Chrome
         run: |
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-linux-signing-keyring.gpg > /dev/null
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-signing-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
+
+        # wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        # sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+        # sudo apt-get update
+        # sudo apt-get install -y google-chrome-stable
 
       - name: List releaseFiles directory
         run: ls -l ./docs/release_notes
@@ -71,7 +86,7 @@ jobs:
 
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.4
         with:
           tag_name: ${{ inputs.version }}
           release_name: "Release ${{ inputs.version }}"
@@ -82,7 +97,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Notes PDF
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v1.0.2
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./docs/release_notes/ACE_Web_SDK_Release_Notes.pdf
@@ -91,15 +106,32 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Release Notes .md
-        uses: actions/upload-release-asset@v1
+      - name: Find the Web SDK zip file
+        id: find_websdk_zip
+        run: |
+          ZIP_FILE=$(find ./binaries -type f -name "ACEWebSDK-${{ inputs.version }}-*.zip" | head -n 1)
+          echo "websdk_zip_file=$(basename "$ZIP_FILE")" >> $GITHUB_OUTPUT
+
+      - name: Upload zip file to release
+        if: steps.find_websdk_zip.outputs.websdk_zip_file != ''
+        uses: actions/upload-release-asset@v1.0.2
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./docs/release_notes/release_notes.md
-          asset_name: release_notes.md
-          asset_content_type: text/markdown
+          asset_path: ./binaries/${{ steps.find_websdk_zip.outputs.websdk_zip_file }}
+          asset_name: ${{ steps.find_websdk_zip.outputs.websdk_zip_file }}
+          asset_content_type: application/zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#      - name: Upload Release Notes .md
+#        uses: actions/upload-release-asset@v1
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: ./docs/release_notes/release_notes.md
+#          asset_name: release_notes.md
+#          asset_content_type: text/markdown
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 #       - name: Upload multiple assets
 #        uses: AButler/upload-release-assets@v3.0
