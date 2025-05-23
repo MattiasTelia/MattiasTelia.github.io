@@ -59,6 +59,12 @@ jobs:
           # For example:
           # ./zip_and_get_binaries.sh
 
+      - name: Convert release notes from markdown to html
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+          pandoc --defaults=./docs/release_notes/release_notes.yaml ./docs/release_notes/release_notes.md -o ./docs/release_notes/ACE_Web_SDK_Release_Notes.html
+
       - name: Install Google Chrome
         run: |
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-linux-signing-keyring.gpg > /dev/null
