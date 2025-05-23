@@ -63,7 +63,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y pandoc
-          pandoc --defaults=./docs/release_notes/release_notes.yaml
+          cd docs/release_notes
+          pandoc --defaults=release_notes.yaml
 
       - name: Install Google Chrome
         run: |
@@ -74,7 +75,6 @@ jobs:
 
       - name: Convert release notes from html to pdf
         run: |
-          cd ./docs/release_notes
           google-chrome --headless --no-sandbox --disable-gpu --print-to-pdf=./docs/release_notes/ACE_Web_SDK_Release_Notes.pdf ./docs/release_notes/ACE_Web_SDK_Release_Notes.html
 
       - name: Create GitHub Release
