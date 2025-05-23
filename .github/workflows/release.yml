@@ -74,6 +74,7 @@ jobs:
 
       - name: Convert release notes from html to pdf
         run: |
+          cd ./docs/release_notes
           google-chrome --headless --no-sandbox --disable-gpu --print-to-pdf=./docs/release_notes/ACE_Web_SDK_Release_Notes.pdf ./docs/release_notes/ACE_Web_SDK_Release_Notes.html
 
       - name: Create GitHub Release
