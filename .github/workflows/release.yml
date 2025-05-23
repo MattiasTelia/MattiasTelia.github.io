@@ -29,7 +29,7 @@ jobs:
             exit 1
           fi  
 
-  CreateAandUploadReleaseAssets:
+  CreateAndUploadReleaseAssets:
     runs-on: ubuntu-latest
     needs: CheckReleaseBranchExists
     permissions:
@@ -112,8 +112,8 @@ jobs:
       - name: Find the Web SDK debug zip file
         id: find_websdk_debug_zip
         run: |
-          ZIP_FILE=$(find ./binaries -type f -name "ACEWebSDK-${{ inputs.version }}-debug-*.zip" | head -n 1)
-          echo "websdk_debug_zip_file=$(basename "$ZIP_FILE")" >> $GITHUB_OUTPUT
+          ZIP_DEBUG_FILE=$(find ./binaries -type f -name "ACEWebSDK-${{ inputs.version }}-debug-*.zip" | head -n 1)
+          echo "websdk_debug_zip_file=$(basename "$ZIP_DEBUG_FILE")" >> $GITHUB_OUTPUT
 
       - name: Upload zip file to release
         if: steps.find_websdk_debug_zip.outputs.websdk_debug_zip_file != ''
