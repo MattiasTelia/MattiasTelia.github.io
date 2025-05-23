@@ -143,18 +143,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Merge release branch to develop
-        run: |
-          git fetch origin
-          git checkout develop
-          git pull origin develop
-          git merge --no-ff release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into develop"
-          # Exit if release branch and develop differ
-          if ! git diff --quiet origin/develop origin/release/${{ inputs.version }}; then
-            echo "Branches differ, skipping merge and exit script."
-            exit 1
-          fi          
-          git push origin develop
+#      - name: Merge release branch to develop
+#        run: |
+#          git fetch origin
+#          git checkout develop
+#          git pull origin develop
+#          git merge --no-ff release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into develop"
+#          # Exit if release branch and develop differ
+#          if ! git diff --quiet origin/develop origin/release/${{ inputs.version }}; then
+#            echo "Branches differ, skipping merge and exit script."
+#            exit 1
+#          fi          
+#          git push origin develop
 
 #      - name: Upload Release Notes .md
 #        uses: actions/upload-release-asset@v1
