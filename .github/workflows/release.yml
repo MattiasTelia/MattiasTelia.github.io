@@ -95,7 +95,7 @@ jobs:
       - name: Find the Web SDK zip file
         id: find_websdk_zip
         run: |
-          ZIP_FILE=$(find ./binaries -type f -name "ACEWebSDK-${{ inputs.version }}-*.zip" | head -n 1)
+          ZIP_FILE=$(find ./binaries -type f -name "ACEWebSDK-${{ inputs.version }}-*.zip" ! -name "*debug*" | head -n 1)
           echo "websdk_zip_file=$(basename "$ZIP_FILE")" >> $GITHUB_OUTPUT
 
       - name: Upload zip file to release
