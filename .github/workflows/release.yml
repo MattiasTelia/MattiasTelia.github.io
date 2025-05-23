@@ -59,23 +59,23 @@ jobs:
           # For example:
           # ./zip_and_get_binaries.sh
 
-      - name: Convert release notes from markdown to html
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc
-          cd docs/release_notes
-          pandoc --defaults=release_notes.yaml
+#      - name: Convert release notes from markdown to html
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y pandoc
+#          cd docs/release_notes
+#          pandoc --defaults=release_notes.yaml
 
-      - name: Install Google Chrome
-        run: |
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-linux-signing-keyring.gpg > /dev/null
-          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-signing-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
+#      - name: Install Google Chrome
+#        run: |
+#          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-linux-signing-keyring.gpg > /dev/null
+#          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-signing-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+#          sudo apt-get update
+#          sudo apt-get install -y google-chrome-stable
 
-      - name: Convert release notes from html to pdf
-        run: |
-          google-chrome --headless --no-sandbox --disable-gpu --print-to-pdf=./docs/release_notes/ACE_Web_SDK_Release_Notes.pdf ./docs/release_notes/ACE_Web_SDK_Release_Notes.html
+#      - name: Convert release notes from html to pdf
+#        run: |
+#          google-chrome --headless --no-sandbox --disable-gpu --print-to-pdf=./docs/release_notes/ACE_Web_SDK_Release_Notes.pdf ./docs/release_notes/ACE_Web_SDK_Release_Notes.html
 
       - name: Create GitHub Release
         id: create_release
@@ -89,25 +89,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Release Notes PDF
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./docs/release_notes/ACE_Web_SDK_Release_Notes.pdf
-          asset_name: ACE_Web_SDK_Release_Notes.pdf
-          asset_content_type: application/pdf
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Upload Release Notes PDF
+#        uses: actions/upload-release-asset@v1.0.2
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: ./docs/release_notes/ACE_Web_SDK_Release_Notes.pdf
+#          asset_name: ACE_Web_SDK_Release_Notes.pdf
+#          asset_content_type: application/pdf
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Release Notes HTML
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./docs/release_notes/ACE_Web_SDK_Release_Notes.html
-          asset_name: ACE_Web_SDK_Release_Notes.html
-          asset_content_type: text/html
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Upload Release Notes HTML
+#        uses: actions/upload-release-asset@v1.0.2
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: ./docs/release_notes/ACE_Web_SDK_Release_Notes.html
+#          asset_name: ACE_Web_SDK_Release_Notes.html
+#          asset_content_type: text/html
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Find the Web SDK zip file
         id: find_websdk_zip
@@ -142,6 +142,19 @@ jobs:
           asset_content_type: application/zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge release branch to develop
+        run: |
+          git fetch origin
+          git checkout develop
+          git pull origin develop
+          git merge --no-ff release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into develop"
+          # Exit if release branch and develop differ
+          if ! git diff --quiet origin/develop origin/release/${{ inputs.version }}; then
+            echo "Branches differ, skipping merge and exit script."
+            exit 1
+          fi          
+          git push origin develop
 
 #      - name: Upload Release Notes .md
 #        uses: actions/upload-release-asset@v1
