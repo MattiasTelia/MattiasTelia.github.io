@@ -63,7 +63,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y pandoc
-          pandoc --defaults=./docs/release_notes/release_notes.yaml ./docs/release_notes/release_notes.md -o ./docs/release_notes/ACE_Web_SDK_Release_Notes.html
+          pandoc --defaults=./docs/release_notes/release_notes.yaml
 
       - name: Install Google Chrome
         run: |
@@ -95,6 +95,16 @@ jobs:
           asset_path: ./docs/release_notes/ACE_Web_SDK_Release_Notes.pdf
           asset_name: ACE_Web_SDK_Release_Notes.pdf
           asset_content_type: application/pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Notes HTML
+        uses: actions/upload-release-asset@v1.0.2
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./docs/release_notes/ACE_Web_SDK_Release_Notes.html
+          asset_name: ACE_Web_SDK_Release_Notes.html
+          asset_content_type: text/html
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
