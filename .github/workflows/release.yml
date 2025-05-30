@@ -89,6 +89,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Append extra markdown to GitHub Release
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const release = await github.rest.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: '${{ inputs.version }}'
+            });
+            const newBody = release.data.body + '\n\n' + "Link to testplan: [Test Plan]";
+            await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release.data.id,
+              body: newBody
+            });
+
 #      - name: Upload Release Notes PDF
 #        uses: actions/upload-release-asset@v1.0.2
 #        with:
