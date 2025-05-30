@@ -84,8 +84,6 @@ jobs:
           tag_name: ${{ inputs.version }}
           release_name: "Release ${{ inputs.version }}"
           body_path: ./docs/release_notes/release_notes.md
-          body: |
-            Release notes for version ${{ inputs.version }}
           draft: false
           prerelease: true
         env:
