@@ -1,4 +1,316 @@
+# Release Notes Version 31
+
+## ACE Web SDK Version 31.0.0
+
+2025-05-23
+
+### Compatible version of other components
+
+- ACE ClusterWare 31.0 or newer
+- ACE Main Server 31.0 or newer
+  - without Chat Disconnect Protection: 26.1
+- ACE Chat Engine 31.0 or newer
+  - without meeting type specific video texts: 29.0
+  - without Chat Disconnect Protection: 26.1
+  - without Onsite video: 20.0
+- ACE Reference Chat Client 31.0 or newer
+  - without meeting type specific video texts: 29.0
+  - without Chat Disconnect Protection: 22.0
+  - without Onsite video: 22.0
+- ACE Cobrowsing Engine 20.0 or newer
+- ACE Proactive Web Engine 20.0 or newer
+- ACE Web API 21.0 or newer
+- ACE Knowledge Widgets v5
+
+### This version of Web SDK contains
+
+- ACE Knowledge Widgets: ACE Widgets 1.3.27
+
+### New in this version
+
+- ACET-48170 - Show meeting type (video and/or screen- and filesharing) when asking visitor to accept a meeting. ACE Video and Sharing meetings text has also been updated in the configuration file template. To only use the new texts in the configuration file template, there is no need to update the Web SDK version; just simply update the existing configuration files with new texts.
+             
+- ACET-49336 - Change how to display opening hours in order to comply to the WCAG standard
+
+### Bugs corrected
+
+- ACET-49337 - Focus handling disrupts tab order in widget
+
+### Configuration file changes
+
+- None
+
+### Limitations
+
+For details on browser support, see *Configuration Instructions ACE Web SDK*.
+
+#### ACE Knowledge Widgets:
+
+- No support for ACE Online Widgets and Plugins version 4. To use this version of Web SDK, v4 widgets need to be upgraded to One Widget.
+- ACET-1564 Low impact CSP errors when open contact list
+
+#### ACE Cobrowsing:
+
+- In cobrowsing, the content of iframes might not be the same in the agent’s browser as in the visitor’s browser.
+- Elements with styling (CSS) created by using styled-components loose all their styling on the agent's page in the cobrowsing. ACE One Widget (Online Widgets version 5) relies on styled-components, and is therefore rendered without styling in the agent's view.
+- ALM-16507 Cobrowsing might not work correctly if the website uses responsive design. The device-related media queries, such as max/min-device-width/height, might cause different layout in the agent’s browser since the devices might be different. Note: the device-related media queries are deprecated from the CSS specification.
+- ALM-19302 If a web page uses Custom Elements, these elements are not interpreted at the agent, resulting in a broken page.
+- ALM-17615 Cobrowsing might not work correctly if the end user zooms in the web browser.
+
+#### General:
+
+- ALM-18447 For multi-tenant systems, the pop-out window in ACE Reference Chat Client does not work.
+
+#### Google Chrome:
+
+- In Incognito mode, ACE Web SDK functions do not work, unless the setting `Block third-party cookies in Incognito` is changed to `Allow all cookies`.
+
+#### iOS:
+
+- ALM-18033 On any browser (iOS), opening the chat in more than one browser tab may lead to unexpected behavior.
+- DEV-32634 Notification sound for new messages does not work for Apple devices.
+- ACET-11005 Exit chat button ('X') disappear in Safari browser after temporarily leaving the chat
+
+**Safari**:
+
+- In Safari, the option `Press Tab to highlight each item on a web page`
+  has to be checked in order for ACE Chatbot Widget and ACE One Widget to be WCAG 2.1 AA compliant.
+- ALM-16687 In private browsing mode on Safari (macOS and iOS), ACE Web SDK functions are interrupted if the page is reloaded or navigated. E.g. if a chat is in progress, it will be reset and lost if the page is reloaded.
+- ALM-18004, ALM-18081, ALM-18087 On Safari (macOS), if browser setting
+  "Prevent cross-site tracking" is enabled (which is the default) a page reload, or navigation, might cause interruptions in ACE Web SDK functions, such as a reset of an ongoing chat session.
+- ALM-18239 Pop out chat to new window feature is disabled for Safari because of browser behavior.
+
+### Related documents
+
+- Configuration Instructions ACE Web SDK
+- Configuration Instructions ACE Chat
+- Configuration Instructions ACE Reference Chat Client
+- Configuration Instructions ACE Web Distribution Server
+- Release Notes ACE Reference Chat Client
+- Release Notes ACE Knowledge Widgets
+- https://ace-showcase.com/help-hub/
+
+### Installation information
+
+- The runtime part of ACE Web SDK is delivered as a zip file. Unzip and move to Web Distribution Server.
+
+
+
+
+
+
+
+
+
+
+
 # Release Notes Version 29
+
+## ACE Web SDK Version 29.0.8
+
+2025-04-25
+
+### Compatible version of other components
+
+- ACE ClusterWare 29.0 or newer
+- ACE Main Server 29.0 or newer
+  - without Chat Disconnect Protection: 26.1
+- ACE Chat Engine 29.0 or newer
+  - without Chat Disconnect Protection: 26.1
+  - without Onsite video: 20.0
+- ACE Reference Chat Client 29.0 or newer
+  - without Chat Disconnect Protection: 22.0
+  - without Onsite video: 22.0
+- ACE Cobrowsing Engine 20.0 or newer
+- ACE Proactive Web Engine 20.0 or newer
+- ACE Web API 21.0 or newer
+- ACE Knowledge Widgets v5
+
+### This version of Web SDK contains
+
+- ACE Knowledge Widgets: ACE Widgets 1.3.26
+
+### New in this version
+
+- Various WCAG improvements
+
+### Bugs corrected
+
+- ACET-47088 - Chat history disappears when reloading page or navigating to another sub domain
+- ACET-48732 - Contact method forms with criteria don't re-evaluate in Conversational Hub Widget
+- ACET-48751 - Survey link is rendered multiple times when refreshing the page
+
+### Configuration file changes
+
+- None
+
+### Limitations
+
+For details on browser support, see *Configuration Instructions ACE Web SDK*.
+
+#### ACE Knowledge Widgets:
+
+- No support for ACE Online Widgets and Plugins version 4. To use this version of Web SDK, v4 widgets need to be upgraded to One Widget.
+- ACET-1564 Low impact CSP errors when open contact list
+
+#### ACE Cobrowsing:
+
+- In cobrowsing, the content of iframes might not be the same in the agent’s browser as in the visitor’s browser.
+- Elements with styling (CSS) created by using styled-components loose all their styling on the agent's page in the cobrowsing. ACE One Widget (Online Widgets version 5) relies on styled-components, and is therefore rendered without styling in the agent's view.
+- ALM-16507 Cobrowsing might not work correctly if the website uses responsive design. The device-related media queries, such as max/min-device-width/height, might cause different layout in the agent’s browser since the devices might be different. Note: the device-related media queries are deprecated from the CSS specification.
+- ALM-19302 If a web page uses Custom Elements, these elements are not interpreted at the agent, resulting in a broken page.
+- ALM-17615 Cobrowsing might not work correctly if the end user zooms in the web browser.
+
+#### General:
+
+- ALM-18447 For multi-tenant systems, the pop-out window in ACE Reference Chat Client does not work.
+
+#### Google Chrome:
+
+- In Incognito mode, ACE Web SDK functions do not work, unless the setting `Block third-party cookies in Incognito` is changed to `Allow all cookies`.
+
+#### iOS:
+
+- ALM-18033 On any browser (iOS), opening the chat in more than one browser tab may lead to unexpected behavior.
+- DEV-32634 Notification sound for new messages does not work for Apple devices.
+- ACET-11005 Exit chat button ('X') disappear in Safari browser after temporarily leaving the chat
+
+**Safari**:
+
+- In Safari, the option `Press Tab to highlight each item on a web page`
+  has to be checked in order for ACE Chatbot Widget and ACE One Widget to be WCAG 2.1 AA compliant.
+- ALM-16687 In private browsing mode on Safari (macOS and iOS), ACE Web SDK functions are interrupted if the page is reloaded or navigated. E.g. if a chat is in progress, it will be reset and lost if the page is reloaded.
+- ALM-18004, ALM-18081, ALM-18087 On Safari (macOS), if browser setting
+  "Prevent cross-site tracking" is enabled (which is the default) a page reload, or navigation, might cause interruptions in ACE Web SDK functions, such as a reset of an ongoing chat session.
+- ALM-18239 Pop out chat to new window feature is disabled for Safari because of browser behavior.
+
+### Related documents
+
+- Configuration Instructions ACE Web SDK
+- Configuration Instructions ACE Chat
+- Configuration Instructions ACE Reference Chat Client
+- Configuration Instructions ACE Web Distribution Server
+- Release Notes ACE Reference Chat Client
+- Release Notes ACE Knowledge Widgets
+- https://ace-showcase.com/help-hub/
+
+### Installation information
+
+- The runtime part of ACE Web SDK is delivered as a zip file. Unzip and move to Web Distribution Server.
+
+
+
+
+
+
+
+
+
+
+
+
+## ACE Web SDK Version 29.0.7
+
+2025-03-25
+
+### Compatible version of other components
+
+- ACE ClusterWare 29.0 or newer
+- ACE Main Server 29.0 or newer
+  - without Chat Disconnect Protection: 26.1
+- ACE Chat Engine 29.0 or newer
+  - without Chat Disconnect Protection: 26.1
+  - without Onsite video: 20.0
+- ACE Reference Chat Client 29.0 or newer
+  - without Chat Disconnect Protection: 22.0
+  - without Onsite video: 22.0
+- ACE Cobrowsing Engine 20.0 or newer
+- ACE Proactive Web Engine 20.0 or newer
+- ACE Web API 21.0 or newer
+- ACE Knowledge Widgets v5
+
+### This version of Web SDK contains
+
+- ACE Knowledge Widgets: ACE Widgets 1.3.21
+
+### New in this version
+
+- None
+
+### Bugs corrected
+
+- ACET-48691 - Conversational Hub Widget: Greeting text does not show after refreshing the page 
+
+### Configuration file changes
+
+- None
+
+### Limitations
+
+For details on browser support, see *Configuration Instructions ACE Web SDK*.
+
+#### ACE Knowledge Widgets:
+
+- No support for ACE Online Widgets and Plugins version 4. To use this version of Web SDK, v4 widgets need to be upgraded to One Widget.
+- ACET-1564 Low impact CSP errors when open contact list
+
+#### ACE Cobrowsing:
+
+- In cobrowsing, the content of iframes might not be the same in the agent’s browser as in the visitor’s browser.
+- Elements with styling (CSS) created by using styled-components loose all their styling on the agent's page in the cobrowsing. ACE One Widget (Online Widgets version 5) relies on styled-components, and is therefore rendered without styling in the agent's view.
+- ALM-16507 Cobrowsing might not work correctly if the website uses responsive design. The device-related media queries, such as max/min-device-width/height, might cause different layout in the agent’s browser since the devices might be different. Note: the device-related media queries are deprecated from the CSS specification.
+- ALM-19302 If a web page uses Custom Elements, these elements are not interpreted at the agent, resulting in a broken page.
+- ALM-17615 Cobrowsing might not work correctly if the end user zooms in the web browser.
+
+#### General:
+
+- ALM-18447 For multi-tenant systems, the pop-out window in ACE Reference Chat Client does not work.
+
+#### Google Chrome:
+
+- In Incognito mode, ACE Web SDK functions do not work, unless the setting `Block third-party cookies in Incognito` is changed to `Allow all cookies`.
+
+#### iOS:
+
+- ALM-18033 On any browser (iOS), opening the chat in more than one browser tab may lead to unexpected behavior.
+- DEV-32634 Notification sound for new messages does not work for Apple devices.
+- ACET-11005 Exit chat button ('X') disappear in Safari browser after temporarily leaving the chat
+
+**Safari**:
+
+- In Safari, the option `Press Tab to highlight each item on a web page`
+  has to be checked in order for ACE Chatbot Widget and ACE One Widget to be WCAG 2.1 AA compliant.
+- ALM-16687 In private browsing mode on Safari (macOS and iOS), ACE Web SDK functions are interrupted if the page is reloaded or navigated. E.g. if a chat is in progress, it will be reset and lost if the page is reloaded.
+- ALM-18004, ALM-18081, ALM-18087 On Safari (macOS), if browser setting
+  "Prevent cross-site tracking" is enabled (which is the default) a page reload, or navigation, might cause interruptions in ACE Web SDK functions, such as a reset of an ongoing chat session.
+- ALM-18239 Pop out chat to new window feature is disabled for Safari because of browser behavior.
+
+### Related documents
+
+- Configuration Instructions ACE Web SDK
+- Configuration Instructions ACE Chat
+- Configuration Instructions ACE Reference Chat Client
+- Configuration Instructions ACE Web Distribution Server
+- Release Notes ACE Reference Chat Client
+- Release Notes ACE Knowledge Widgets
+- https://ace-showcase.com/help-hub/
+
+### Installation information
+
+- The runtime part of ACE Web SDK is delivered as a zip file. Unzip and move to Web Distribution Server.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## ACE Web SDK Version 29.0.6
 
@@ -868,7 +1180,7 @@ For details on browser support, see *Configuration Instructions ACE Web SDK*.
 ### Bugs corrected
 
 - ACET-11209: Lists in v5 widget comes with strange whitespace
-- ACET-41605: Cannot enlarge video when starting video call from v5 bot chat
+- ACET-41605: Cannot enlarge video when starting a video meeting from v5 bot chat
 - ACET-11173: Fix focus on widget via triggerbutton
 - ACET-41855: Cannot use an email contact method if configuring the mail placeholder
 
@@ -2486,7 +2798,7 @@ ACE Knowledge Implementation Versions 4 and 5
 
 - DEV-16877 A minimized chatbot does not open automatically on agent messages after a page load.
 - DEV-17176 CSS for headers in chatbot and floating (v4) does not work.
-- DEV-17252 Change camera in video calls in combination with switching between text and video mode causes the published video to fail.
+- DEV-17252 Change camera in video meeting in combination with switching between text and video mode causes the published video to fail.
 - DEV-17619 Opening hours in English in Knowledge Contact Methods take too much space, causing illogical line breaks.
 - ALM-19628 Cobrowsing shows "communication lost" when a session is terminated normally.
 - SUP-496 When a page with an active chatbot is loaded the conversation is scrolled to the top (beginning) instead of the end.
