@@ -1,11 +1,11 @@
-name: ReleGet Jira ticketase
+name: Get Jira ticket
 
 on:
   workflow_dispatch:
 
 
 jobs:
-  Get JIRA ticket:
+  Get_JIRA_ticket:
     runs-on: [medium, telia-managed, Linux, X64]
     steps:
       - name: Checkout current branch
