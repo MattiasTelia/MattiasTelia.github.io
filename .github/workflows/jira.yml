@@ -6,7 +6,15 @@ on:
 
 jobs:
   Get_JIRA_ticket:
-    runs-on: [medium, telia-managed, Linux, X64]
+    # runs-on: [medium, telia-managed, Linux, X64]
+    runs-on: ubuntu-latest
+
+    env:
+          # Don't need to specify proxy server when using telia-managed runner, it is always using 
+          # 'http://proxy-se.ddc.teliasonera.net:8080' for both http and https
+          HTTP_PROXY: 'http://proxy-se.ddc.teliasonera.net:8080'
+          HTTPS_PROXY: 'http://proxy-se.ddc.teliasonera.net:8080'
+
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v3
