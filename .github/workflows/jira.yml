@@ -1,0 +1,22 @@
+name: ReleGet Jira ticketase
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  Get JIRA ticket:
+    runs-on: [medium, telia-managed, Linux, X64]
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+
+      - name: Get Jira ticket ACET-49712
+        run: |
+          curl -u "${{ secrets.XRAY_CREDENTIALS}}" \
+          -H "Accept: application/json" \
+          "https://jira.atlassian.teliacompany.net/rest/api/2/issue/ACET-49712"
+
+
+
+
