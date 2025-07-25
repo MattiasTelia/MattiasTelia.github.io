@@ -52,3 +52,16 @@ jobs:
           git add package.json
           git commit -m "Update version to ${{ inputs.version }}"
           git push origin HEAD   
+
+      - name: Merge release branch to min_main
+        run: |
+          git fetch origin
+          git checkout min_main
+          git pull origin min_main
+          git merge --no-ff release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into min_main"
+          # Exit if release branch and min_main differ
+          if git diff --quiet origin/min_main origin/release/${{ inputs.version }}; then
+            echo "Branches differ, exit script and don't push."
+            exit 1
+          fi          
+          git push origin min_main
