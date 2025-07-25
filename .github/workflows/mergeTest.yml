@@ -23,6 +23,9 @@ jobs:
 
   MergeTest:
     runs-on: ubuntu-latest
+    needs: CheckReleaseBranchExists
+    permissions:
+      contents: write # Grant write permissions to the GITHUB_TOKEN
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v3
