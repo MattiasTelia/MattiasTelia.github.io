@@ -56,10 +56,10 @@ jobs:
       - name: Merge release branch to min_main
         run: |
           git fetch origin
-          git checkout min_main
-          git pull origin min_main
           git checkout release/${{ inputs.version }}
           git pull origin release/${{ inputs.version }}
+          git checkout min_main
+          git pull origin min_main
           git merge --no-ff release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into min_main"
           # Exit if release branch and min_main differ
           if git diff --quiet origin/min_main origin/release/${{ inputs.version }}; then
@@ -71,14 +71,14 @@ jobs:
       - name: Merge min_main branch to min_develop branch
         run: |
           git fetch origin
-          git checkout min_develop
-          git pull origin min_develop
           git checkout min_main
           git pull origin min_main
+          git checkout min_develop
+          git pull origin min_develop
           git merge --no-ff min_main -m "Merge min_main into min_develop"
           # Exit if min_main branch and min_develop differ
           if git diff --quiet origin/min_develop origin/min_main; then
-            echo "Branches differ, exit script and don't push. Work has been done i develop"
+            echo "Branches differ, exit script and don't push. Work has been done in develop"
             exit 1
           fi
           git push origin min_develop
