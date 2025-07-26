@@ -76,7 +76,7 @@ jobs:
           git pull origin min_main
           git merge --no-ff release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into min_main"
           # Exit if release branch and min_main differ
-          if git diff --quiet min_main release/${{ inputs.version }}; then
+          if git diff min_main release/${{ inputs.version }}; then
             echo "Branches differ (seems like work has been done in main), exiting script (no push is done)."
             exit 1
           fi          
