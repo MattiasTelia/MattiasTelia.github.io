@@ -59,6 +59,7 @@ jobs:
           git checkout min_develop
           git pull origin min_develop
           git branch release/${{ inputs.version }}
+          git checkout release/${{ inputs.version }}
           jq ".version = \"${{ inputs.version }}\"" package.json > package.tmp.json
           mv package.tmp.json package.json
           git config user.name "github-actions[bot]"
