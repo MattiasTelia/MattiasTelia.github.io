@@ -30,23 +30,38 @@ jobs:
       - name: Checkout current branch
         uses: actions/checkout@v3
 
-      - name: Create and push release branch
+#      - name: Create and push release branch
+#        run: |
+#          git fetch origin
+#          git branch release/${{ inputs.version }}
+#          git push origin release/${{ inputs.version }}
+
+#      - name: Checkout the created branch
+#        run: |
+#          git checkout release/${{ inputs.version }}
+
+#      - name: Update version in package.json
+#        run: |
+#          jq ".version = \"${{ inputs.version }}\"" package.json > package.tmp.json
+#          mv package.tmp.json package.json
+
+#     - name: Commit and push changes
+#        run: |
+#          git config user.name "github-actions[bot]"
+#          git config user.email "github-actions[bot]@users.noreply.github.com"
+#          git add package.json
+#          git commit -m "Update version to ${{ inputs.version }}"
+#          git push origin HEAD   
+
+      - name: Create, modify and push release branch
         run: |
           git fetch origin
+          git checkout min_develop
+          git pull origin min_develop
           git branch release/${{ inputs.version }}
           git push origin release/${{ inputs.version }}
-
-      - name: Checkout the created branch
-        run: |
-          git checkout release/${{ inputs.version }}
-
-      - name: Update version in package.json
-        run: |
           jq ".version = \"${{ inputs.version }}\"" package.json > package.tmp.json
           mv package.tmp.json package.json
-
-      - name: Commit and push changes
-        run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add package.json
