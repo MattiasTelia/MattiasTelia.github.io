@@ -87,10 +87,10 @@ jobs:
           git pull origin release/${{ inputs.version }}
           git checkout min_main
           git pull origin min_main
-          # Exit if release branch and min_main differ
+          # Exit if merge conflicts
           git merge --no-ff --allow-unrelated-histories -s recursive release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into min_main"
           if [ $? -ne 0 ]; then
-            echo "Merge conflict detected! Exiting."
+            echo "Merge conflict detected, exiting script (no push is done)."
             exit 1
           fi
           # Exit if release branch and min_main differ
