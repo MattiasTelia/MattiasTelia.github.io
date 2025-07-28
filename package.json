@@ -1,6 +1,6 @@
 {
   "name": "@telia-ace/websdk-mono",
-  "version": "1.0.28",
+  "version": "1.0.30",
   "description": "Telia ACE Web SDK monorepo.",
   "author": "Telia Company AB",
   "engines": {
