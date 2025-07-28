@@ -4,7 +4,7 @@
 
 2025-05-23
 
-### Compatible version of other components
+### Compatible version of other components - MJ change in min_main
 
 - ACE ClusterWare 31.0 or newer
 - ACE Main Server 31.0 or newer
