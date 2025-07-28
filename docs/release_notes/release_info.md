@@ -1,6 +1,6 @@
 # Summary
 
-Summary - blaj blaj
+Summary - MJ change in min_develop
 
 # Good to know about the release
 
