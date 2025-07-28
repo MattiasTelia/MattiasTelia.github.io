@@ -53,49 +53,98 @@ jobs:
 #          git commit -m "Update version to ${{ inputs.version }}"
 #          git push origin HEAD   
 
-      - name: Create, modify and push release branch
+#
+# ====  THis work the first time running the workflow, but fails on subsequent runs ====
+#
+#      - name: Create, modify and push release branch
+#        run: |
+#          git fetch origin
+#          git checkout min_develop
+#          git pull origin min_develop
+#          git branch release/${{ inputs.version }}
+#          git checkout release/${{ inputs.version }}
+#          jq ".version = \"${{ inputs.version }}\"" package.json > package.tmp.json
+#          mv package.tmp.json package.json
+#          git config user.name "github-actions[bot]"
+#          git config user.email "github-actions[bot]@users.noreply.github.com"
+#          git add package.json
+#          git commit -m "Update version to ${{ inputs.version }}"
+#          git push origin release/${{ inputs.version }}
+
+#      - name: Merge release branch to min_main
+#        run: |
+#          git fetch origin
+#          git checkout release/${{ inputs.version }}
+#          git pull origin release/${{ inputs.version }}
+#          git checkout min_main
+#          git pull origin min_main
+#          git merge --no-ff release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into min_main"
+#          # Exit if release branch and min_main differ
+#          git diff min_main release/${{ inputs.version }}
+#          if ! git diff --quiet min_main release/${{ inputs.version }}; then
+#            echo "Branches differ (seems like work has been done in main), exiting script (no push is done)."
+#            exit 1
+#          fi          
+#          git push origin min_main
+
+#      - name: Merge min_main branch to min_develop branch
+#        run: |
+#          git fetch origin
+#          git checkout min_main
+#          git pull origin min_main
+#          git checkout min_develop
+#          git pull origin min_develop
+#          git merge --no-ff min_main -m "Merge min_main into min_develop"
+#          # Exit if min_main branch and min_develop differ
+#          if ! git diff --quiet min_develop min_main; then
+#            echo "Branches differ (seems like work has been done in develop), exiting script (no push is done)."
+#            exit 1
+#          fi
+#          git push origin min_develop
+#
+# ====  THis work the first time running the workflow, but fails on subsequent runs ====
+#
+
+# == Test with only develop and main
+
+# == Change the min_develop branch
+      - name: Modify and push min_develop branch
         run: |
           git fetch origin
           git checkout min_develop
           git pull origin min_develop
-          git branch release/${{ inputs.version }}
-          git checkout release/${{ inputs.version }}
           jq ".version = \"${{ inputs.version }}\"" package.json > package.tmp.json
           mv package.tmp.json package.json
+          echo " ===== Status after version update:"
+          git status
+          echo " ===== Less package.json:"
+          less package.json
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add package.json
+          echo " ===== Status after add:"
+          git status
           git commit -m "Update version to ${{ inputs.version }}"
-          git push origin release/${{ inputs.version }}
+          echo " ===== Status after version commit:"
+          git status
+          git push origin min_develop
+          echo " ===== Status after push:"
+          git status
 
-      - name: Merge release branch to min_main
+      - name: Merge min_develop branch to min_main
         run: |
           git fetch origin
-          git checkout release/${{ inputs.version }}
-          git pull origin release/${{ inputs.version }}
+          git checkout min_develop
+          git pull origin min_develop
           git checkout min_main
           git pull origin min_main
-          git merge --no-ff release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into min_main"
+          git merge --no-ff min_develop -m "Merge min_develop into min_main"
           # Exit if release branch and min_main differ
           git diff min_main release/${{ inputs.version }}
           if ! git diff --quiet min_main release/${{ inputs.version }}; then
             echo "Branches differ (seems like work has been done in main), exiting script (no push is done)."
             exit 1
-          fi          
+          fi
           git push origin min_main
 
-      - name: Merge min_main branch to min_develop branch
-        run: |
-          git fetch origin
-          git checkout min_main
-          git pull origin min_main
-          git checkout min_develop
-          git pull origin min_develop
-          git merge --no-ff min_main -m "Merge min_main into min_develop"
-          # Exit if min_main branch and min_develop differ
-          if ! git diff --quiet min_develop min_main; then
-            echo "Branches differ (seems like work has been done in develop), exiting script (no push is done)."
-            exit 1
-          fi
-          git push origin min_develop
 
