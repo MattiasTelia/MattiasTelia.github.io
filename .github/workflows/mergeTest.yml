@@ -87,7 +87,7 @@ jobs:
           git pull origin release/${{ inputs.version }}
           git checkout min_main
           git pull origin min_main
-          git merge --no-ff --allow-unrelated-histories -s theirs release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into min_main"
+          git merge --no-ff --allow-unrelated-histories -s recursive -Xtheirs release/${{ inputs.version }} -m "Merge release/${{ inputs.version }} into min_main"
           # Exit if release branch and min_main differ
           git diff min_main release/${{ inputs.version }}
           if ! git diff --quiet min_main release/${{ inputs.version }}; then
