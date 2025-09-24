@@ -29,15 +29,16 @@
 <body>
   <h1>Conversational Widget</h1>
   <h2> - nonce in script tag</h2>
-  <div
-    nonce="blaj"
-    id="rectangle"
-    style="
+  <style nonce="blaj">
+    #rectangle {
       width: 1000px;
       height: 20px;
       background-color: rgb(235, 14, 14);
       position: absolute;
       z-index: 100;
-    "
+    }
+  </style>
+  <div
+    id="rectangle"
   ></div>
 </body>
