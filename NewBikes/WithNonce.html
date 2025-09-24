@@ -1,6 +1,23 @@
 <head>
-  <title>Test av ACET-51330</title>
-  <script>
+  <title>With Nonce</title>
+  <meta charset="utf-8" />
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="
+      default-src 'none';
+      script-src 'nonce-blaj' 'strict-dynamic' https: 'unsafe-inline';
+      connect-src 'self' 'nonce-blaj' https://*.ace.teliacompany.net;
+      style-src 'self' 'nonce-blaj';
+      frame-src https://*.ace.teliacompany.net;
+      img-src 'self' 'nonce-blaj' https://*.webprovisions.io blob: data:;
+      font-src 'self';
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      media-src 'self' data:;
+    "
+  />
+  <script nonce="blaj">
     /* ACE Widgets - Embed v4 */
     (function(e,t){var n=document.getElementsByTagName("script")[0];var i=document.createElement("script");i.type="module";
     window.ace=window.ace||{_c:[],_w:[],widget:function(e,t){window.ace._w.push([e,t])},
@@ -10,7 +27,7 @@
   </script>
 </head>
 <body>
-  <h1>Test av ACET-51330</h1>
+  <h1>Conversational Widget - Test av ACET-51330</h1>
   <div
     id="rectangle"
     style="
