@@ -5,7 +5,7 @@
     http-equiv="Content-Security-Policy"
     content="
       default-src 'none';
-      script-src 'nonce-blaj' 'strict-dynamic' https: 'unsafe-inline';
+      script-src 'self' 'nonce-blaj' 'strict-dynamic' https: 'unsafe-inline';
       connect-src 'self' 'nonce-blaj' https://*.ace.teliacompany.net;
       style-src 'self' 'nonce-blaj';
       frame-src https://*.ace.teliacompany.net;
@@ -27,7 +27,8 @@
   </script>
 </head>
 <body>
-  <h1>Conversational Widget - Test av ACET-51330</h1>
+  <h1>Conversational Widget</h1>
+  <h2> - nonce in script tag</h2>
   <div
     id="rectangle"
     style="
