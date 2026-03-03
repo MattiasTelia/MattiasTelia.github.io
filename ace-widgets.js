@@ -33,6 +33,7 @@ function updateWidgetVersion() {
     console.log("Checking for ACE widget version...");
     if (window.ace && typeof window.ace.version === "function") {
       const versionObj = window.ace.version().widgets;
+      console.log("ACE widget version object:", versionObj);
       // Get the first version value from the object
       const versionValue = Object.values(versionObj)[0];
       const versionElement = document.getElementById("widget-version");
@@ -53,7 +54,7 @@ function updateWidgetVersion() {
 }
 
 // Initialize version checking when page loads
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
   console.log("Page fully loaded, starting widget version check...");
-  setTimeout(updateWidgetVersion, 500);
+  // setTimeout(updateWidgetVersion, 500);
 });
