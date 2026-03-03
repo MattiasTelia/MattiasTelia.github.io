@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tunnistus Page</title>
+    <script src="../ace-widgets.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background-color: #f9f9f9;
+      }
+      h1 {
+        color: #333;
+        border-bottom: 2px solid #dc3545;
+        padding-bottom: 10px;
+      }
+      .back-link {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #dc3545;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .back-link:hover {
+        background-color: #c82333;
+      }
+      .content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .auth-section {
+        background-color: #f8e8e8;
+        padding: 15px;
+        border-left: 4px solid #dc3545;
+        margin: 15px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="../indexNew.html" class="back-link">← Back to Home</a>
+    <h1>Auth chat widget (Tunnistus)</h1>
+    <div class="content">
+      <p>
+        Conversational widget with mandatory authentication using Tunnistus.
+      </p>
+      <div class="auth-section">
+        <h3>Note:</h3>
+        <p>
+          Use "Mobile certificate" method to simulate authenticated user on the
+          page that opens up when starting the identification process.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

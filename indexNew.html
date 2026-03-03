@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Front Page - Navigation Hub</title>
+    <script src="ace-widgets.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background-color: #f5f5f5;
+      }
+      .banner {
+        background-color: #6a4c93;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin: -40px -40px 40px -40px;
+        font-size: 40px;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .banner-info {
+        font-size: 16px;
+        font-weight: normal;
+        margin-top: 10px;
+        line-height: 1.4;
+      }
+      .navigation {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      .nav-link {
+        display: block;
+        padding: 15px 20px;
+        margin: 10px 0;
+        background-color: #fff;
+        color: #333;
+        text-decoration: none;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      .nav-link:hover {
+        background-color: #007bff;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="banner">
+      Telia ACE Conversational Widget Test Page
+      <div class="banner-info">
+        Widget version: <span id="widget-version">Loading...</span><br />
+        Environment: devtest1 - Organization area: Uppland - Entrance: knowen -
+        Errand: S02
+      </div>
+    </div>
+    <div class="navigation">
+      <a href="basic/index.html" class="nav-link">Chat widget</a>
+      <a href="bot/index.html" class="nav-link">Bot widget</a>
+      <a href="tunnistus/index.html" class="nav-link"
+        >Auth chat widget (Tunnistus)</a
+      >
+      <a href="bankid/index.html" class="nav-link">Auth chat widget (BankID)</a>
+    </div>
+    <script>
+      // Wait for ACE widgets to load, then get version
+      function updateWidgetVersion() {
+        try {
+          if (window.ace && typeof window.ace.version === "function") {
+            const versionObj = window.ace.version().widgets;
+            // Get the first version value from the object
+            const versionValue = Object.values(versionObj)[0];
+            document.getElementById("widget-version").textContent =
+              versionValue || "Unknown";
+          } else {
+            // Retry after a short delay if ace is not ready yet
+            setTimeout(updateWidgetVersion, 100);
+          }
+        } catch (error) {
+          document.getElementById("widget-version").textContent =
+            "Error loading version";
+        }
+      }
+
+      // Start checking for version after DOM is loaded
+      document.addEventListener("DOMContentLoaded", updateWidgetVersion);
+    </script>
+  </body>
+</html>
