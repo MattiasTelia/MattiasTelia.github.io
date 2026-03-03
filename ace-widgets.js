@@ -56,5 +56,5 @@ function updateWidgetVersion() {
 // Initialize version checking when page loads
 window.addEventListener("load", function () {
   console.log("Page fully loaded, starting widget version check...");
-  // setTimeout(updateWidgetVersion, 500);
+  setTimeout(updateWidgetVersion, 500);
 });
