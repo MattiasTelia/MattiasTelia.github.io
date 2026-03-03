@@ -65,6 +65,7 @@
             console.log("ACE widget version object:", versionObj);
             // Get the first version value from the object
             const versionValue = Object.values(versionObj)[0];
+            console.log("ACE widget version value:", versionValue);
             document.getElementById("widget-version").textContent =
               versionValue || "UnknownBlaj";
           } else {
