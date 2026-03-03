@@ -41,19 +41,6 @@
         margin-top: -10px;
         margin-bottom: 25px;
       }
-      .refresh-version-btn {
-        padding: 8px 12px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9em;
-        margin-bottom: 20px;
-      }
-      .refresh-version-btn:hover {
-        background-color: #218838;
-      }
     </style>
   </head>
   <body>
@@ -62,9 +49,6 @@
     <div class="version-info">
       Widget version: <span id="widget-version">Loading...</span>
     </div>
-    <button class="refresh-version-btn" onclick="updateWidgetVersion()">
-      Refresh Version
-    </button>
     <div class="content">
       <p>
         Conversational widget with live agent chat. Banners and logos are
@@ -78,10 +62,8 @@
           console.log("Checking for ACE widget version...");
           if (window.ace && typeof window.ace.version === "function") {
             const versionObj = window.ace.version().widgets;
-            console.log("ACE widget version object:", versionObj.textContent);
             // Get the first version value from the object
             const versionValue = Object.values(versionObj)[0];
-            console.log("ACE widget version value:", versionValue);
             document.getElementById("widget-version").textContent =
               versionValue || "UnknownBlaj";
           } else {
@@ -89,13 +71,18 @@
             setTimeout(updateWidgetVersion, 100);
           }
         } catch (error) {
+          console.error("Error getting widget version:", error);
           document.getElementById("widget-version").textContent =
             "Error loading version";
         }
       }
 
-      // Start checking for version after DOM is loaded
-      document.addEventListener("DOMContentLoaded", updateWidgetVersion);
+      // Wait for the entire page and all resources (including scripts) to load
+      window.addEventListener("load", function () {
+        console.log("Page fully loaded, starting widget version check...");
+        // Give ace-widgets.js a moment to initialize after loading
+        setTimeout(updateWidgetVersion, 500);
+      });
     </script>
   </body>
 </html>
