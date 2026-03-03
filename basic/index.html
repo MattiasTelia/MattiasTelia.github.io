@@ -41,6 +41,19 @@
         margin-top: -10px;
         margin-bottom: 25px;
       }
+      .refresh-version-btn {
+        padding: 8px 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9em;
+        margin-bottom: 20px;
+      }
+      .refresh-version-btn:hover {
+        background-color: #218838;
+      }
     </style>
   </head>
   <body>
@@ -49,6 +62,9 @@
     <div class="version-info">
       Widget version: <span id="widget-version">Loading...</span>
     </div>
+    <button class="refresh-version-btn" onclick="updateWidgetVersion()">
+      Refresh Version
+    </button>
     <div class="content">
       <p>
         Conversational widget with live agent chat. Banners and logos are
