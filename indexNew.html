@@ -71,12 +71,14 @@
       // Wait for ACE widgets to load, then get version
       function updateWidgetVersion() {
         try {
+          console.log("Checking for ACE widget version...");
           if (window.ace && typeof window.ace.version === "function") {
             const versionObj = window.ace.version().widgets;
+            console.log("ACE widget version object:", versionObj);
             // Get the first version value from the object
             const versionValue = Object.values(versionObj)[0];
             document.getElementById("widget-version").textContent =
-              versionValue || "Unknown";
+              versionValue || "UnknownBlaj";
           } else {
             // Retry after a short delay if ace is not ready yet
             setTimeout(updateWidgetVersion, 100);
