@@ -61,9 +61,10 @@
         try {
           console.log("Checking for ACE widget version...");
           if (window.ace && typeof window.ace.version === "function") {
-            console.log("ACE widget version object:", window.ace.version());
+            console.log("ACE version object:", window.ace.version());
             const versionObj = window.ace.version().widgets;
             // Get the first version value from the object
+            console.log("ACE widget version:", window.ace.version().widgets);
             const versionValue = Object.values(versionObj)[0];
             document.getElementById("widget-version").textContent =
               versionValue || "UnknownBlaj";
