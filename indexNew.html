@@ -54,7 +54,6 @@
     <div class="banner">
       Telia ACE Conversational Widget Test Page
       <div class="banner-info">
-        Widget version: <span id="widget-version">Loading...</span><br />
         Environment: devtest1 - Organization area: Uppland - Entrance: knowen -
         Errand: S02
       </div>
@@ -67,30 +66,5 @@
       >
       <a href="bankid/index.html" class="nav-link">Auth chat widget (BankID)</a>
     </div>
-    <script>
-      // Wait for ACE widgets to load, then get version
-      function updateWidgetVersion() {
-        try {
-          console.log("Checking for ACE widget version...");
-          if (window.ace && typeof window.ace.version === "function") {
-            const versionObj = window.ace.version().widgets;
-            console.log("ACE widget version object:", versionObj);
-            // Get the first version value from the object
-            const versionValue = Object.values(versionObj)[0];
-            document.getElementById("widget-version").textContent =
-              versionValue || "UnknownBlaj";
-          } else {
-            // Retry after a short delay if ace is not ready yet
-            setTimeout(updateWidgetVersion, 100);
-          }
-        } catch (error) {
-          document.getElementById("widget-version").textContent =
-            "Error loading version";
-        }
-      }
-
-      // Start checking for version after DOM is loaded
-      document.addEventListener("DOMContentLoaded", updateWidgetVersion);
-    </script>
   </body>
 </html>

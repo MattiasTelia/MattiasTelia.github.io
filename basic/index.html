@@ -14,7 +14,7 @@
       h1 {
         color: #333;
         border-bottom: 2px solid #007bff;
-        padding-bottom: 10px;
+        padding-bottom: 5px;
       }
       .back-link {
         display: inline-block;
@@ -34,16 +34,51 @@
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
+      .version-info {
+        font-size: 0.8em;
+        color: #666;
+        font-weight: normal;
+        margin-top: -10px;
+        margin-bottom: 25px;
+      }
     </style>
   </head>
   <body>
     <a href="../indexNew.html" class="back-link">← Back to Home</a>
     <h1>Chat widget</h1>
+    <div class="version-info">
+      Widget version: <span id="widget-version">Loading...</span>
+    </div>
     <div class="content">
       <p>
         Conversational widget with live agent chat. Banners and logos are
         activated and survey will be displayed when the chat ends.
       </p>
     </div>
+    <script>
+      // Wait for ACE widgets to load, then get version
+      function updateWidgetVersion() {
+        try {
+          console.log("Checking for ACE widget version...");
+          if (window.ace && typeof window.ace.version === "function") {
+            const versionObj = window.ace.version().widgets;
+            console.log("ACE widget version object:", versionObj);
+            // Get the first version value from the object
+            const versionValue = Object.values(versionObj)[0];
+            document.getElementById("widget-version").textContent =
+              versionValue || "UnknownBlaj";
+          } else {
+            // Retry after a short delay if ace is not ready yet
+            setTimeout(updateWidgetVersion, 100);
+          }
+        } catch (error) {
+          document.getElementById("widget-version").textContent =
+            "Error loading version";
+        }
+      }
+
+      // Start checking for version after DOM is loaded
+      document.addEventListener("DOMContentLoaded", updateWidgetVersion);
+    </script>
   </body>
 </html>
