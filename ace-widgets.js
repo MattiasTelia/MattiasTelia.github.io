@@ -31,19 +31,42 @@
 function updateWidgetVersion() {
   try {
     console.log("Checking for ACE widget version...");
-    if (window.ace && typeof window.ace.version === "function") {
-      const versionObj = window.ace.version().widgets;
-      console.log("ACE widget version object:", versionObj);
-      // Get the first version value from the object
-      const versionValue = Object.values(versionObj)[0];
-      const versionElement = document.getElementById("widget-version");
-      if (versionElement) {
-        versionElement.textContent = versionValue || "Unknown";
+
+    let attempts = 0;
+    const maxAttempts = 100; // 10 seconds / 100ms = 100 attempts
+
+    const checkVersion = () => {
+      if (
+        window.ace &&
+        typeof window.ace.version === "function" &&
+        window.ace.version().widgets !== undefined
+      ) {
+        const versionObj = window.ace.version().widgets;
+        console.log("ACE widget version object:", versionObj);
+        // Get the first version value from the object
+        const versionValue = Object.values(versionObj)[0];
+        const versionElement = document.getElementById("widget-version");
+        if (versionElement) {
+          versionElement.textContent = versionValue || "Unknown";
+        }
+        return true; // Success
       }
-    } else {
-      // Retry after a short delay if ace is not ready yet
-      setTimeout(updateWidgetVersion, 100);
-    }
+      return false; // Not ready yet
+    };
+
+    const intervalId = setInterval(() => {
+      attempts++;
+      if (checkVersion() || attempts >= maxAttempts) {
+        clearInterval(intervalId);
+        if (attempts >= maxAttempts && !checkVersion()) {
+          console.log("Timeout: ACE widget not ready after 10 seconds");
+          const versionElement = document.getElementById("widget-version");
+          if (versionElement) {
+            versionElement.textContent = "Timeout - widget not ready";
+          }
+        }
+      }
+    }, 100);
   } catch (error) {
     console.error("Error getting widget version:", error);
     const versionElement = document.getElementById("widget-version");
