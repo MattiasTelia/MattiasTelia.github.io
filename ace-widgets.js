@@ -23,6 +23,6 @@
     n.parentNode.insertBefore(i, n);
   }
 })(
-  "https://widgets-dev.ace.teliacompany.net/embed/team-widgets-test/229ab27e-f2e3-4f18-b8d8-c2e12d10f106?v=1.1.123-rc.26",
+  "https://widgets-dev.ace.teliacompany.net/embed/team-widgets-e2e/d02af50f-e355-471e-8cdc-a855bd65d1cd?v=1.1.123-rc.26",
   {},
 );
