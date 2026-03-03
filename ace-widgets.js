@@ -39,7 +39,8 @@ function updateWidgetVersion() {
       if (
         window.ace &&
         typeof window.ace.version === "function" &&
-        window.ace.version().widgets !== undefined
+        window.ace.version().widgets !== undefined &&
+        Object.values(window.ace.version().widgets)[0] !== undefined
       ) {
         const versionObj = window.ace.version().widgets;
         console.log("ACE widget version object:", versionObj);
