@@ -61,6 +61,7 @@
         try {
           console.log("Checking for ACE widget version...");
           if (window.ace && typeof window.ace.version === "function") {
+            console.log("ACE widget version object:", window.ace.version());
             const versionObj = window.ace.version().widgets;
             // Get the first version value from the object
             const versionValue = Object.values(versionObj)[0];
@@ -81,7 +82,7 @@
       window.addEventListener("load", function () {
         console.log("Page fully loaded, starting widget version check...");
         // Give ace-widgets.js a moment to initialize after loading
-        setTimeout(updateWidgetVersion, 500);
+        setTimeout(updateWidgetVersion, 5000);
       });
     </script>
   </body>
