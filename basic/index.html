@@ -62,7 +62,7 @@
           console.log("Checking for ACE widget version...");
           if (window.ace && typeof window.ace.version === "function") {
             const versionObj = window.ace.version().widgets;
-            console.log("ACE widget version object:", versionObj);
+            console.log("ACE widget version object:", versionObj.textContent);
             // Get the first version value from the object
             const versionValue = Object.values(versionObj)[0];
             console.log("ACE widget version value:", versionValue);
