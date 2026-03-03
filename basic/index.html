@@ -69,6 +69,7 @@
               versionValue || "UnknownBlaj";
           } else {
             // Retry after a short delay if ace is not ready yet
+            console.log("Else:", window.ace.version());
             setTimeout(updateWidgetVersion, 100);
           }
         } catch (error) {
