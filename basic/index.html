@@ -55,37 +55,5 @@
         activated and survey will be displayed when the chat ends.
       </p>
     </div>
-    <script>
-      // Wait for ACE widgets to load, then get version
-      function updateWidgetVersion() {
-        try {
-          console.log("Checking for ACE widget version...");
-          if (window.ace && typeof window.ace.version === "function") {
-            console.log("ACE version object:", window.ace.version());
-            const versionObj = window.ace.version().widgets;
-            // Get the first version value from the object
-            console.log("ACE widget version:", window.ace.version().widgets);
-            const versionValue = Object.values(versionObj)[0];
-            document.getElementById("widget-version").textContent =
-              versionValue || "UnknownBlaj";
-          } else {
-            // Retry after a short delay if ace is not ready yet
-            console.log("Else:", window.ace.version());
-            setTimeout(updateWidgetVersion, 100);
-          }
-        } catch (error) {
-          console.error("Error getting widget version:", error);
-          document.getElementById("widget-version").textContent =
-            "Error loading version";
-        }
-      }
-
-      // Wait for the entire page and all resources (including scripts) to load
-      window.addEventListener("load", function () {
-        console.log("Page fully loaded, starting widget version check...");
-        // Give ace-widgets.js a moment to initialize after loading
-        setTimeout(updateWidgetVersion, 1000);
-      });
-    </script>
   </body>
 </html>
